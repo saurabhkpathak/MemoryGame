@@ -13,6 +13,8 @@ angular.module('urbanClapMemoryGameApp')
             if (($scope.gridSize.row * $scope.gridSize.column) % 2 !== 0) {
                 return;
             }
+            delete $localStorage.click1;
+            delete $localStorage.gameStatus;
             $localStorage.gridSize = $scope.gridSize;
             $location.path('/game');
         };
