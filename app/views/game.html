@@ -7,3 +7,12 @@
         </span>
     </span>
 </div>
+
+<div ng-show="gameEnd">
+    <div class="jumbotron">
+        <h1>{{message}}</h1>
+    </div>
+    <div class="row no-margin">
+        <button class="form-control btn btn-primary" ng-click="redirectToMain()">Start A New Game</button>
+    </div>
+</div>
