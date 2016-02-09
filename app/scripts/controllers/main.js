@@ -8,10 +8,12 @@
  * Controller of the urbanClapMemoryGameApp
  */
 angular.module('urbanClapMemoryGameApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('MainCtrl', function($scope, $location, $localStorage) {
+        $scope.createGridAndRedirect = function() {
+            if (($scope.gridSize.row * $scope.gridSize.column) % 2 !== 0) {
+                return;
+            }
+            $localStorage.gridSize = $scope.gridSize;
+            $location.path('/game');
+        };
+    });
