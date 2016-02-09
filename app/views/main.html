@@ -1,9 +1,32 @@
 <div class="container-fluid">
-    <span>
+    <h1 class="jumbotron">
+        Welcome to the MEMORY GAME
+    </h1>
+    <div class="row no-margin vertical-spacing">
         Please tell the grid size with which you want to play
-    </span>
-    Rows
-    <input type="number" ng-model="gridSize.row" class="form-control" placeholder="enter only integers, less than 10" /> Columns
-    <input type="number" ng-model="gridSize.column" class="form-control" placeholder="enter only integers, less than 10" />
-    <button class="form-control btn btn-primary" ng-click="createGridAndRedirect()">Play</button>
+    </div>
+    <div class="row no-margin vertical-spacing">
+        <span class="col-md-2 no-padding">Rows</span>
+        <span class="col-md-10 no-padding vertical-spacing">
+            <input type="number" ng-model="gridSize.row" ng-focus="error=''" class="form-control" placeholder="Enter only Integers" />
+        </span>
+    </div>
+    <div class="row no-margin vertical-spacing">
+        <span class="col-md-2 no-padding">Columns</span>
+        <span class="col-md-10 no-padding vertical-spacing">
+            <input type="number" ng-model="gridSize.column" ng-focus="error=''" class="form-control vertical-spacing" placeholder="Enter only Integers" />
+        </span>
+    </div>
+    <div class="row no-margin vertical-spacing error">
+        {{error}}
+    </div>
+    <button class="form-control btn btn-primary vertical-spacing" ng-click="createGridAndRedirect()">Play</button>
+
+    <div ng-show="gameExists">
+        <div class="row no-margin vertical-spacing or">OR</div>
+        <div class="row no-margin vertical-spacing">
+            To resume your existing game, click Resume button
+        </div>
+        <button class="form-control btn btn-primary" ng-click="redirectToGame()">Resume</button>
+    </div>
 </div>
