@@ -8,7 +8,7 @@
  * Controller of the urbanClapMemoryGameApp
  */
 angular.module('urbanClapMemoryGameApp')
-    .controller('GameCtrl', function($localStorage, $scope, $timeout) {
+    .controller('GameCtrl', function($localStorage, $scope, $timeout, $location) {
 
         function Grid(value, status, visibleValue) {
             this.value = value;
@@ -33,6 +33,7 @@ angular.module('urbanClapMemoryGameApp')
 
         // function for creating the grid
         var createGrid = function() {
+            $scope.gameEnd = false;
             $scope.gridSize = $localStorage.gridSize;
             $scope.click1 = $localStorage.click1 ? $localStorage.click1 : null;
             if ($localStorage.gameStatus) {
@@ -69,12 +70,24 @@ angular.module('urbanClapMemoryGameApp')
             return new Array(n);
         };
 
+        $scope.redirectToMain = function() {
+            delete $localStorage.click1;
+            delete $localStorage.gameStatus;
+            delete $localStorage.gridSize;
+            $location.path('/');
+        };
+
         $scope.showGridValue = function(row, column) {
             if ($scope.gameStatus[row][column].status !== 'locked') {
                 return;
             }
             $scope.gameStatus[row][column].status = 'visible';
             $scope.gameStatus[row][column].visibleValue = $scope.gameStatus[row][column].value;
+            if (JSON.stringify($scope.gameStatus).indexOf('"locked"') < 0) {
+                $scope.gameEnd = true;
+                $scope.message = 'Game Ended';
+                return;
+            }
 
             // comparison functionality
             if ($scope.click1) {
@@ -109,4 +122,9 @@ angular.module('urbanClapMemoryGameApp')
 
         // calling initial functions
         createGrid();
+        if (JSON.stringify($scope.gameStatus).indexOf('"locked"') < 0) {
+            $scope.gameEnd = true;
+            $scope.message = 'Game Ended';
+            return;
+        }
     });
