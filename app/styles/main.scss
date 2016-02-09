@@ -89,3 +89,25 @@ body {
     border-bottom: 0;
   }
 }
+
+// custom styling
+.no-margin {
+    margin: 0;
+}
+.no-padding {
+    padding: 0;
+}
+.grid {
+    display: inline-block;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.5);
+    margin: 10px;
+    text-align: center;
+}
+.grid-image {
+    width: 100%;
+    height: auto;
+}
+.grid-visible {
+    display: inline-block;
+    padding: 19px;
+}
