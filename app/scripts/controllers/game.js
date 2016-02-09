@@ -8,7 +8,7 @@
  * Controller of the urbanClapMemoryGameApp
  */
 angular.module('urbanClapMemoryGameApp')
-    .controller('GameCtrl', function($localStorage, $scope) {
+    .controller('GameCtrl', function($localStorage, $scope, $timeout) {
 
         function Grid(value, status, visibleValue) {
             this.value = value;
@@ -16,7 +16,7 @@ angular.module('urbanClapMemoryGameApp')
             this.status = status; //locked, visible, unlocked
         }
 
-        // functioan that shuffles an array
+        // function that shuffles an array
         function shuffle(oldArray) {
             var array = oldArray;
             var currentIndex = array.length,
@@ -34,16 +34,21 @@ angular.module('urbanClapMemoryGameApp')
         // function for creating the grid
         var createGrid = function() {
             $scope.gridSize = $localStorage.gridSize;
-            var start = 1,
-                gridValues = [],
-                gridCount = ($scope.gridSize.row * $scope.gridSize.column) / 2;
-            while (start <= gridCount) {
-                gridValues.push(start);
-                start++;
+            $scope.click1 = $localStorage.click1 ? $localStorage.click1 : null;
+            if ($localStorage.gameStatus) {
+                $scope.gameStatus = $localStorage.gameStatus
+            } else {
+                var start = 1,
+                    gridValues = [],
+                    gridCount = ($scope.gridSize.row * $scope.gridSize.column) / 2;
+                while (start <= gridCount) {
+                    gridValues.push(start);
+                    start++;
+                }
+                gridValues = gridValues.concat(gridValues);
+                $scope.gridValues = shuffle(gridValues);
+                populateGrid();
             }
-            gridValues = gridValues.concat(gridValues);
-            $scope.gridValues = shuffle(gridValues);
-            populateGrid();
         };
 
         var populateGrid = function() {
@@ -70,11 +75,38 @@ angular.module('urbanClapMemoryGameApp')
             }
             $scope.gameStatus[row][column].status = 'visible';
             $scope.gameStatus[row][column].visibleValue = $scope.gameStatus[row][column].value;
-            console.log($scope.gameStatus);
+
+            // comparison functionality
+            if ($scope.click1) {
+                if ($scope.gameStatus[row][column].value === $scope.click1.value) {
+                    $scope.gameStatus[$scope.click1.row][$scope.click1.column].status = 'unlocked';
+                    $scope.gameStatus[row][column].status = 'unlocked';
+                    $scope.click1 = null;
+
+                    // update local storage
+                    $localStorage.gameStatus = $scope.gameStatus;
+                    $localStorage.click1 = $scope.click1;
+                } else {
+                    $timeout(function() {
+                        $scope.gameStatus[$scope.click1.row][$scope.click1.column].status = 'locked';
+                        $scope.gameStatus[row][column].status = 'locked';
+                        $scope.gameStatus[$scope.click1.row][$scope.click1.column].visibleValue = null;
+                        $scope.gameStatus[row][column].visibleValue = null;
+                        $scope.click1 = null;
+                        $localStorage.click1 = $scope.click1;
+                        $localStorage.gameStatus = $scope.gameStatus;
+                    }, 500);
+                }
+            } else {
+                $scope.click1 = {
+                    value: $scope.gameStatus[row][column].value,
+                    row: row,
+                    column: column
+                };
+                $localStorage.click1 = $scope.click1;
+            }
         };
 
         // calling initial functions
         createGrid();
-        $scope.click1 = null;
-        $scope.click2 = null;
     });
