@@ -1,10 +1,7 @@
-{{gridValues}}
-
 <div class="row no-margin" ng-repeat="row in createArray(gridSize.row) track by $index">
     <span class="grid col-md-1 no-padding" ng-repeat="column in createArray(gridSize.column) track by $index" ng-click="showGridValue($index, $parent.$index)">
         <img src="images/Icon-60@2x.png" class="grid-image" ng-show="gameStatus[$index][$parent.$index].status === 'locked'">
 
-<!-- {{gameStatus[$index][$parent.$index].visibleValue}} -->
         <span ng-show="gameStatus[$index][$parent.$index].visibleValue !== null" class="grid-visible">
             {{gameStatus[$index][$parent.$index].visibleValue}}
         </span>
