@@ -36,7 +36,7 @@ angular.module('urbanClapMemoryGameApp')
             $scope.gridSize = $localStorage.gridSize;
             $scope.click1 = $localStorage.click1 ? $localStorage.click1 : null;
             if ($localStorage.gameStatus) {
-                $scope.gameStatus = $localStorage.gameStatus
+                $scope.gameStatus = $localStorage.gameStatus;
             } else {
                 var start = 1,
                     gridValues = [],
