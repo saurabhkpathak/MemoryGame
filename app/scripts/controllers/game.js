@@ -64,6 +64,7 @@ angular.module('urbanClapMemoryGameApp')
                     counter++;
                 }
             }
+            $localStorage.gameStatus = $scope.gameStatus;
         };
 
         $scope.createArray = function(n) {
